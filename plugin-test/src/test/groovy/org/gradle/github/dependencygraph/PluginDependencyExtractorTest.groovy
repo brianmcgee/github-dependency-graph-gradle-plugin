@@ -124,29 +124,61 @@ class PluginDependencyExtractorTest extends BaseExtractorTest {
         // Settings plugin
         Map<String, Map> pluginDependencies = settingsPluginsAreSupported()
             ? [
-                "com.example:settingPlugin:1.0"                          : [
+                "my.settings.plugin:my.settings.plugin.gradle.plugin:1.0": [
                     relationship: "direct",
+                    dependencies: ["com.example:settingPlugin:1.0"]
+                ],
+                "com.example:settingPlugin:1.0"                          : [
+                    relationship: "indirect",
                     dependencies: ["org.test:foo:1.0"]
                 ],
                 "org.test:foo:1.0"                                       : [
                     relationship: "indirect",
                     dependencies: []
+                ],
+
+                // The project plugins are resolved at build level without any transitive deps
+                "my.project.plugin1:my.project.plugin1.gradle.plugin:1.0": [
+                    relationship: "direct",
+                    dependencies: []
+                ],
+                "my.project.plugin2:my.project.plugin2.gradle.plugin:1.0": [
+                    relationship: "direct",
+                    dependencies: []
                 ]
             ]
-            : [:]
+            : [
+                // The project plugins are resolved at build level without any transitive deps
+                "my.project.plugin1:my.project.plugin1.gradle.plugin:1.0": [
+                    relationship: "direct",
+                    dependencies: []
+                ],
+                "my.project.plugin2:my.project.plugin2.gradle.plugin:1.0": [
+                    relationship: "direct",
+                    dependencies: []
+                ]
+            ]
 
         // Plugin 1
         pluginDependencies.putAll([
-            "com.example:plugin1:1.0"                                : [
+            "my.project.plugin1:my.project.plugin1.gradle.plugin:1.0": [
                 relationship: "direct",
+                dependencies: ["com.example:plugin1:1.0"]
+            ],
+            "com.example:plugin1:1.0"                                : [
+                relationship: "indirect",
                 dependencies: []
             ]
         ])
 
         // Plugin 2
         pluginDependencies.putAll([
-            "com.example:plugin2:1.0"                                : [
+            "my.project.plugin2:my.project.plugin2.gradle.plugin:1.0": [
                 relationship: "direct",
+                dependencies: ["com.example:plugin2:1.0"]
+            ],
+            "com.example:plugin2:1.0"                                : [
+                relationship: "indirect",
                 dependencies: ["org.test:bar:1.0"]
             ],
             "org.test:bar:1.0"                                       : [
