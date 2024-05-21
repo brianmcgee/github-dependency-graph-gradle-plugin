@@ -31,8 +31,8 @@ plugins {
 val releaseVersion = loadReleaseVersion()
 val releaseNotes = loadReleaseNotes()
 val releaseTag = "v${releaseVersion}"
-val pluginGroup = "org.gradle"
-val pluginArtifactId = "github-dependency-graph-gradle-plugin"
+val pluginGroup = "ie.bmcgee"
+val pluginArtifactId = "nix-dependency-graph-gradle-plugin"
 
 group = pluginGroup
 version = releaseVersion
@@ -81,8 +81,8 @@ tasks.test {
 tasks.withType<Jar>().configureEach {
     manifest {
         attributes["Implementation-Version"] = archiveVersion.get()
-        attributes["Implementation-Title"] = "GitHub Dependency Graph Gradle Plugin"
-        attributes["Implementation-Vendor"] = "Gradle Inc"
+        attributes["Implementation-Title"] = "Nix Dependency Graph Gradle Plugin"
+        attributes["Implementation-Vendor"] = "Brian McGee"
     }
 }
 
@@ -154,9 +154,9 @@ gradlePlugin {
         create("dependencyGraphPlugin") {
             id = "${pluginGroup}.${pluginArtifactId}"
             implementationClass = "org.gradle.github.GitHubDependencyGraphPlugin"
-            displayName = "Generates a GitHub Dependency Graph"
+            displayName = "Generates a Nix Dependency Graph and Helpers"
             description = releaseNotes
-            tags.addAll("github", "dependencies", "dependency-graph", "dependency-submission")
+            tags.addAll("nix", "dependencies", "dependency-graph", "dependency-submission")
         }
     }
 }
@@ -207,9 +207,9 @@ val createReleaseTag = tasks.register<CreateGitTag>("createReleaseTag") {
 }
 
 githubRelease {
-    setToken(System.getenv("GITHUB_DEPENDENCY_GRAPH_GIT_TOKEN") ?: "")
-    owner = "gradle"
-    repo = "github-dependency-graph-gradle-plugin"
+    setToken(System.getenv("NIX_DEPENDENCY_GRAPH_GIT_TOKEN") ?: "")
+    owner = "brianmcgee"
+    repo = "nix-dependency-graph-gradle-plugin"
     releaseName = releaseVersion
     tagName = releaseTag
     body = releaseNotes
