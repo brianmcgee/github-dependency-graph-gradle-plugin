@@ -1,0 +1,12 @@
+import ie.bmcgee.nix.NixDependencyGraphPlugin
+initscript {
+    repositories {
+        maven {
+            url "build/local-plugin-repository"
+        }
+    }
+    dependencies {
+        classpath "ie.bmcgee:nix-dependency-graph-gradle-plugin:+"
+    }
+}
+apply plugin: NixDependencyGraphPlugin
